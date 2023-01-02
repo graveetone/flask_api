@@ -1,6 +1,7 @@
 from flask import abort, make_response
 from models import Person, people_schema, person_schema
 from config import database as db
+from constants import Messages
 
 def read_all():
     people = Person.query.all()
@@ -22,15 +23,14 @@ def create(person):
 
         return person_schema.dump(new_person), 201
     else:
-        abort(406, f"Person with {lname} already exists")
-
+        abort(406, Messages.PERSON_ALREADY_EXISTS.format(lname=lname))
 def read_one(lname):
     person = find_person(lname)
 
     if person:
         return people_schema.dump(person)
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, Messages.PERSON_NOT_FOUND.format(lname=lname))
 
 def update(lname, person):
     existing_person = find_person(lname)
@@ -43,7 +43,8 @@ def update(lname, person):
         
         return person_schema.dump(existing_person), 201
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, Messages.PERSON_NOT_FOUND.format(lname=lname))
+
 
 def delete(lname):
     existing_person = find_person(lname)
@@ -53,4 +54,5 @@ def delete(lname):
 
         return make_response(f"{lname} successfully deleted", 200)
     else:
-        abort(404, f"Person with last name {lname} not found")
+        abort(404, Messages.PERSON_NOT_FOUND.format(lname=lname))
+
