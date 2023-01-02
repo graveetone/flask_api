@@ -8,5 +8,16 @@
     <h1>
         Hello, World!
     </h1>
+
+    <ol>
+        {% for person in people %}
+            <li>
+                <h3>
+                {{ person.fname }} {{person.lname}}
+                </h3>
+            </li>
+        {% endfor %}
+    </ol>
+        
 </body>
 </html>
